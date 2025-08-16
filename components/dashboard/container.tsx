@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 export function Container({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <div className="flex flex-col gap-4 p-4">
-      {children}
-    </div>
-  );
+	return (
+		<div className="flex flex-col gap-4 p-4">
+			{children}
+		</div>
+	);
 }
