@@ -1,13 +1,5 @@
-import { Container } from '@/components/dashboard/container';
-import HomeCards from '@/components/domains/home/home-cards';
-import { HomeChart } from '@/components/domains/home/home-chart';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-	return (
-		<Container>
-			<HomeCards />
-
-			<HomeChart />
-		</Container>
-	);
+export default function Page() {
+	redirect('/dashboard');
 }
