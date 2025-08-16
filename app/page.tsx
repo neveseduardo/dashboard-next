@@ -1,12 +1,13 @@
-import { ModeToggle } from "@/components/theme-toggler";
+import { Container } from "@/components/dashboard/container";
+import HomeCards from "@/components/domains/home/home-cards";
+import { HomeChart } from "@/components/domains/home/home-chart";
 
 export default function Home() {
   return (
-    <div>
-      <nav>
-        <ModeToggle />
-      </nav>
-     TESTES
-    </div>
+    <Container>
+      <HomeCards />
+
+      <HomeChart />
+    </Container>
   );
 }

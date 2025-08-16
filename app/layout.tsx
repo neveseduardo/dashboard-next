@@ -1,8 +1,12 @@
-import { ThemeProvider } from "@/components/theme-provider"
-import ClientOnlyLayout from "@/components/client-only-layout";
+import { ThemeProvider } from "@/components/theme/theme-provider"
+import ClientOnlyLayout from "@/components/global/client-only-layout";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { Navbar } from "@/components/dashboard/navbar";
+import { SidebarProvider } from "@/contexts/sidebar-contexts";
+import { Footer } from "@/components/dashboard/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +40,19 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
               >
-              {children}
+              <div className="flex min-h-screen bg-muted/30">
+                <SidebarProvider>
+                  <Sidebar />
+                  
+                  <div className="flex flex-1 flex-col">
+                    <Navbar />
+                    <main className="flex-1 p-6">
+                      {children}
+                    </main>
+                     <Footer />
+                  </div>
+                </SidebarProvider>
+              </div>
             </ThemeProvider>
           </ClientOnlyLayout>
       </body>
