@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { ModeToggle } from '../theme/theme-toggler';
+import { ModeToggle } from '../../theme/theme-toggler';
 import { Bell } from 'lucide-react';
 
 export function SiteHeader() {
@@ -15,14 +15,13 @@ export function SiteHeader() {
 				/>
 				<h1 className="text-base font-medium">Dashboard</h1>
 				<div className="ml-auto flex items-center gap-2">
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-2">
 						<ModeToggle />
 
-						<Button variant="ghost" size="icon">
+						<Button variant="ghost" size="icon" className="rounded-full">
 							<Bell className="w-5 h-5" />
 						</Button>
 					</div>
-
 				</div>
 			</div>
 		</header>

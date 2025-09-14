@@ -83,6 +83,7 @@ export default [
 			'no-debugger': ['error'],
 			'no-extra-boolean-cast': 'off',
 			'n/no-callback-literal': 'off',
+			'eslint@typescript-eslint/no-explicit-any': 'off',
 		},
 	},
 	{

@@ -1,8 +1,6 @@
 'use client';
 
 import {
-	IconCreditCard,
-	IconDotsVertical,
 	IconLogout,
 	IconNotification,
 	IconUserCircle,
@@ -28,30 +26,40 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
+import { useRouter } from 'next/navigation';
+import { ChevronsUpDown } from 'lucide-react';
+import Link from 'next/link';
 
 export function NavUser({
 	user,
 }: {
 	user: {
+		initials: string
 		name: string
 		email: string
 		avatar: string
 	}
 }) {
 	const { isMobile } = useSidebar();
+	const router = useRouter();
+
+	async function handleLogout() {
+		await fetch('/api/authentication/logout', { method: 'POST' });
+		router.push('/authentication/login');
+	}
 
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
 				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
+					<DropdownMenuTrigger asChild className="cursor-pointer">
 						<SidebarMenuButton
 							size="lg"
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<Avatar>
-								<AvatarImage src="https://github.com/shadcn.png" />
-								<AvatarFallback>CN</AvatarFallback>
+								<AvatarImage src={user.avatar} alt={user.name} />
+								<AvatarFallback>{user.initials}</AvatarFallback>
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								<span className="truncate font-medium">{user.name}</span>
@@ -59,7 +67,7 @@ export function NavUser({
 									{user.email}
 								</span>
 							</div>
-							<IconDotsVertical className="ml-auto size-4" />
+							<ChevronsUpDown className="ml-auto size-4" />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
@@ -84,27 +92,27 @@ export function NavUser({
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
-								<IconUserCircle />
-								Account
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<IconCreditCard />
-								Billing
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<IconNotification />
-								Notifications
-							</DropdownMenuItem>
+							<Link href={'/dashboard/minha-conta'}>
+								<DropdownMenuItem className="cursor-pointer">
+									<IconUserCircle />
+									Minha conta
+								</DropdownMenuItem>
+							</Link>
+							<Link href={'/dashboard/notificacoes'}>
+								<DropdownMenuItem className="cursor-pointer">
+									<IconNotification />
+									Notificações
+								</DropdownMenuItem>
+							</Link>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
 							<IconLogout />
 							Log out
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>
-		</SidebarMenu>
+		</SidebarMenu >
 	);
 }
