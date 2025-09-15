@@ -1,6 +1,7 @@
 'use client';
 
 import { IconCirclePlusFilled, type Icon } from '@tabler/icons-react';
+import { type LucideIcon as LucidIconType } from 'lucide-react';
 
 import {
 	SidebarGroup,
@@ -17,7 +18,7 @@ export function NavMain({
 	items: {
 		title: string
 		url: string
-		icon?: Icon
+		icon?: Icon | LucidIconType
 	}[]
 }) {
 	return (

@@ -14,4 +14,12 @@ export class AuthenticationService {
 		return this.httpClient.post('/auth/user/login', { email: username, password });
 	}
 
+	getAdminProfile(): Promise<any> {
+		return this.httpClient.get('/auth/admin');
+	}
+
+	getUserProfile(): Promise<any> {
+		return this.httpClient.get('/auth/user');
+	}
+
 }

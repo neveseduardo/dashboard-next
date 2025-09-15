@@ -1,4 +1,3 @@
-// app/api/logout/route.ts
 import { NextResponse } from 'next/server';
 
 export async function POST() {
@@ -8,8 +7,7 @@ export async function POST() {
 		{
 			status: 200,
 			headers: {
-				// sobrescreve o cookie com expiração no passado
-				'Set-Cookie': 'token=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0',
+				'Set-Cookie': 'admin-token=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0',
 			},
 		}
 	);

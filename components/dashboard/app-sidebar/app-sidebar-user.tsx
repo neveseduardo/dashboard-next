@@ -30,22 +30,22 @@ import { useRouter } from 'next/navigation';
 import { ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
 
-export function NavUser({
-	user,
-}: {
+type Props = {
 	user: {
 		initials: string
 		name: string
 		email: string
 		avatar: string
 	}
-}) {
+}
+
+export function NavUser({ user }: Props) {
 	const { isMobile } = useSidebar();
 	const router = useRouter();
 
 	async function handleLogout() {
-		await fetch('/api/authentication/logout', { method: 'POST' });
-		router.push('/authentication/login');
+		await fetch('/api/authentication/admin/logout', { method: 'POST' });
+		router.push('/authentication/admin/login');
 	}
 
 	return (

@@ -3,6 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ModeToggle } from '../../theme/theme-toggler';
 import { Bell } from 'lucide-react';
+import Link from 'next/link';
 
 export function SiteHeader() {
 	return (
@@ -18,9 +19,11 @@ export function SiteHeader() {
 					<div className="flex items-center gap-2">
 						<ModeToggle />
 
-						<Button variant="ghost" size="icon" className="rounded-full">
-							<Bell className="w-5 h-5" />
-						</Button>
+						<Link href={'/dashboard/notificacoes'}>
+							<Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+								<Bell className="w-5 h-5" />
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</div>

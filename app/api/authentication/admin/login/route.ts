@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { AuthenticationService } from '@/services/authentication';
-import httpClient from '@/services';
+import { httpClient } from '@/services';
 
 export async function POST(req: Request) {
 	const { email, password } = await req.json();
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 				{
 					status: 200,
 					headers: {
-						'Set-Cookie': `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+						'Set-Cookie': `admin-token=${token}; Path=/; SameSite=Strict`,
 					},
 				}
 			);
