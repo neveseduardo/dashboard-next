@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../assets/css/app.css';
 import { ThemeProvider } from '../contexts/theme-context';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -39,6 +40,8 @@ export default async function RootLayout({
 						{children}
 					</ThemeProvider>
 				</ClientOnlyLayout>
+
+				<Toaster />
 			</body>
 		</html>
 	);
