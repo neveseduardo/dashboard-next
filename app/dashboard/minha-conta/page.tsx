@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from '@/components/dashboard/container';
 
 const MinhaContaIndex = () => {
 	return (
-		<div>
+		<Container>
 			MinhaContaIndex
-		</div>
+		</Container>
 	);
 };
 

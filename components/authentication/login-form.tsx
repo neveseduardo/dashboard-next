@@ -4,35 +4,46 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PasswordInput } from '@/components/ui/password';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { Loader2Icon } from 'lucide-react';
 
-export function LoginForm({
-	className,
-	...props
-}: React.ComponentProps<'form'>) {
+export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
 	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	async function handleLogin(e: React.FormEvent) {
 		e.preventDefault();
+		setLoading(true);
 
-		const res = await fetch('/api/authentication/admin/login', {
-			method: 'POST',
-			body: JSON.stringify({ email, password }),
-			headers: { 'Content-Type': 'application/json' },
-		});
+		try {
+			const res = await fetch('/api/authentication/admin/login', {
+				method: 'POST',
+				body: JSON.stringify({ email, password }),
+				headers: { 'Content-Type': 'application/json' },
+			});
 
-		if (res.ok) {
-			router.push('/dashboard');
-		} else {
-			alert('Login inválido!');
+			if (res.ok) {
+				router.push('/dashboard');
+				toast.success('Login efetuado com sucesso!');
+			} else {
+				alert('Login inválido!');
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error('Erro ao cadastrar usuário!');
+		} finally {
+			setLoading(false);
 		}
 	}
 
 	return (
 		<form
+			autoComplete="off"
 			onSubmit={handleLogin}
 			className={cn('flex flex-col gap-6', className)}
 			{...props}
@@ -52,6 +63,8 @@ export function LoginForm({
 						placeholder="m@example.com"
 						required
 						value={email}
+						disabled={loading}
+						autoComplete="off"
 						onInput={(e) => setEmail(e.currentTarget.value)}
 					/>
 				</div>
@@ -65,16 +78,24 @@ export function LoginForm({
 							Esqueceu sua senha?
 						</a>
 					</div>
-					<Input
+					<PasswordInput
 						id="password"
 						type="password"
 						required
 						value={password}
+						disabled={loading}
+						placeholder="Digite sua senha"
+						autoComplete="off"
 						onInput={(e) => setPassword(e.currentTarget.value)}
 					/>
 				</div>
-				<Button type="submit" className="w-full cursor-pointer">
-					Entrar
+				<Button
+					disabled={loading}
+					type="submit"
+					className="w-full cursor-pointer"
+				>
+					{loading && (<Loader2Icon className="animate-spin" />)}
+					{loading ? 'Entrando...' : 'Entrar'}
 				</Button>
 			</div>
 			<div className="text-center text-sm">

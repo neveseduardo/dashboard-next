@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from '@/components/dashboard/container';
 
 const PesquisarIndex = () => {
 	return (
-		<div>
+		<Container>
 			PesquisarIndex
-		</div>
+		</Container>
 	);
 };
 

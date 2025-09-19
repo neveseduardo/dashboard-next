@@ -18,7 +18,7 @@ import { CreateForm } from './createForm';
 import { EditForm } from './editForm';
 import Head from 'next/head';
 
-
+const EMAILMASTER = 'user@email.com';
 const userService = new UserService(httpClient);
 
 export const UsuariosIndex: React.FC = () => {
@@ -46,7 +46,6 @@ export const UsuariosIndex: React.FC = () => {
 	}, []);
 
 	const handleSuccess = () => {
-		toast.success('Usuário cadastrado com sucesso!');
 		setOpen(false);
 		setLoading(true);
 		fetchUsers();
@@ -58,7 +57,6 @@ export const UsuariosIndex: React.FC = () => {
 	};
 
 	const handleEditSuccess = () => {
-		toast.success('Usuário atualizado com sucesso!');
 		setEditOpen(false);
 		setLoading(true);
 		fetchUsers();
@@ -139,36 +137,38 @@ export const UsuariosIndex: React.FC = () => {
 									<TableCell>{user.email}</TableCell>
 									<TableCell>
 										<div className="flex w-full justify-end gap-2">
-											<Button
-												className="rounded-full cursor-pointer"
-												size={'icon'}
-												onClick={() => handleEdit(user.id)}
-											>
-												<Edit />
-											</Button>
-											{user.email !== 'user@email.com' && (
-												<DropdownMenu>
-													<DropdownMenuTrigger asChild>
-														<Button
-															variant={'destructive'}
-															className="rounded-full cursor-pointer"
-															size={'icon'}
-														>
-															<Trash />
-														</Button>
-													</DropdownMenuTrigger>
-													<DropdownMenuContent align="end">
-														<DropdownMenuItem
-															onClick={() => handleDelete(user.id)}
-															className="text-red-600 cursor-pointer"
-														>
-															Confirmar exclusão
-														</DropdownMenuItem>
-														<DropdownMenuItem className="cursor-pointer">
-															Cancelar
-														</DropdownMenuItem>
-													</DropdownMenuContent>
-												</DropdownMenu>
+											{user.email !== EMAILMASTER && (
+												<>
+													<Button
+														className="rounded-full cursor-pointer"
+														size={'icon'}
+														onClick={() => handleEdit(user.id)}
+													>
+														<Edit />
+													</Button>
+													<DropdownMenu>
+														<DropdownMenuTrigger asChild>
+															<Button
+																variant={'destructive'}
+																className="rounded-full cursor-pointer"
+																size={'icon'}
+															>
+																<Trash />
+															</Button>
+														</DropdownMenuTrigger>
+														<DropdownMenuContent align="end">
+															<DropdownMenuItem
+																onClick={() => handleDelete(user.id)}
+																className="text-red-600 cursor-pointer"
+															>
+																Confirmar exclusão
+															</DropdownMenuItem>
+															<DropdownMenuItem className="cursor-pointer">
+																Cancelar
+															</DropdownMenuItem>
+														</DropdownMenuContent>
+													</DropdownMenu>
+												</>
 											)}
 										</div>
 									</TableCell>

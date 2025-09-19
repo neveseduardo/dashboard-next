@@ -15,6 +15,7 @@ import { Container } from '@/components/dashboard/container';
 import { Edit, Plus, Trash } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
+const EMAILMASTER = 'admin@email.com';
 const administratorService = new AdministratorService(httpClient);
 
 export const AdministradoresIndex: React.FC = () => {
@@ -42,7 +43,6 @@ export const AdministradoresIndex: React.FC = () => {
 	}, []);
 
 	const handleSuccess = () => {
-		toast.success('Administrador cadastrado com sucesso!');
 		setOpen(false);
 		setLoading(true);
 		fetchAdmins();
@@ -54,7 +54,6 @@ export const AdministradoresIndex: React.FC = () => {
 	};
 
 	const handleEditSuccess = () => {
-		toast.success('Administrador atualizado com sucesso!');
 		setEditOpen(false);
 		setLoading(true);
 		fetchAdmins();
@@ -130,36 +129,38 @@ export const AdministradoresIndex: React.FC = () => {
 								<TableCell>{admin.email}</TableCell>
 								<TableCell>
 									<div className="flex w-full justify-end gap-2">
-										<Button
-											className="rounded-full cursor-pointer"
-											size={'icon'}
-											onClick={() => handleEdit(admin.id)}
-										>
-											<Edit />
-										</Button>
-										{admin.email !== 'admin@email.com' && (
-											<DropdownMenu>
-												<DropdownMenuTrigger asChild>
-													<Button
-														variant={'destructive'}
-														className="rounded-full cursor-pointer"
-														size={'icon'}
-													>
-														<Trash />
-													</Button>
-												</DropdownMenuTrigger>
-												<DropdownMenuContent align="end">
-													<DropdownMenuItem
-														onClick={() => handleDelete(admin.id)}
-														className="text-red-600 cursor-pointer"
-													>
-														Confirmar exclusão
-													</DropdownMenuItem>
-													<DropdownMenuItem className="cursor-pointer">
-														Cancelar
-													</DropdownMenuItem>
-												</DropdownMenuContent>
-											</DropdownMenu>
+										{admin.email !== EMAILMASTER && (
+											<>
+												<Button
+													className="rounded-full cursor-pointer"
+													size={'icon'}
+													onClick={() => handleEdit(admin.id)}
+												>
+													<Edit />
+												</Button>
+												<DropdownMenu>
+													<DropdownMenuTrigger asChild>
+														<Button
+															variant={'destructive'}
+															className="rounded-full cursor-pointer"
+															size={'icon'}
+														>
+															<Trash />
+														</Button>
+													</DropdownMenuTrigger>
+													<DropdownMenuContent align="end">
+														<DropdownMenuItem
+															onClick={() => handleDelete(admin.id)}
+															className="text-red-600 cursor-pointer"
+														>
+															Confirmar exclusão
+														</DropdownMenuItem>
+														<DropdownMenuItem className="cursor-pointer">
+															Cancelar
+														</DropdownMenuItem>
+													</DropdownMenuContent>
+												</DropdownMenu>
+											</>
 										)}
 									</div>
 								</TableCell>
