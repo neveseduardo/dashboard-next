@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+import React, { ComponentProps } from 'react';
 // import { NavDocuments } from '@/components/dashboard/app-sidebar/app-sidebar-documents';
 import { NavMain } from '@/components/dashboard/app-sidebar/app-sidebar-main';
 import { NavSecondary } from '@/components/dashboard/app-sidebar/app-sidebar-secondary';
@@ -16,7 +16,11 @@ import {
 import { LayoutDashboard } from 'lucide-react';
 import { sidebarLinks } from '@/utils';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = ComponentProps<typeof Sidebar> & {
+	profileType: 'admin' | 'user';
+};
+
+export function AppSidebar({ profileType, ...props }: AppSidebarProps) {
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
@@ -35,12 +39,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={sidebarLinks.navMain} />
-				{/* <NavDocuments items={sidebarLinks.documents} /> */}
-				<NavSecondary items={sidebarLinks.navSecondary} className="mt-auto" />
+				{profileType === 'admin' && (
+					<NavMain items={sidebarLinks.navMain} />
+				)}
+
+				{profileType === 'user' && (
+					<NavMain items={sidebarLinks.navUser} />
+				)}
+				{profileType === 'admin' && (
+					<NavSecondary items={sidebarLinks.navSecondary} className="mt-auto" />
+				)}
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser user={sidebarLinks.user} />
+				<NavUser profile={profileType} />
 			</SidebarFooter>
 		</Sidebar>
 	);

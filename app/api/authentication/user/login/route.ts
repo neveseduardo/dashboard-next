@@ -15,6 +15,8 @@ export async function POST(req: Request) {
 		if (response.status === 200 && responseData?.data?.token) {
 			const token = responseData.data.token;
 
+			console.log(token);
+
 			return NextResponse.json(
 				{ success: true, message: responseData.message },
 				{

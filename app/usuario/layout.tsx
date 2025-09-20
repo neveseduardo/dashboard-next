@@ -2,7 +2,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/app-sidebar/app-sidebar';
 import { cookies } from 'next/headers';
 import { SiteHeader } from '@/components/dashboard/app-header/app-header';
-import { UserAuthenticationProvider } from '../../contexts/user-authentication-context';
+import { UserAuthenticationProvider } from '@/contexts/user-authentication-context';
 
 export default async function DashboardLayout({
 	children,
@@ -13,8 +13,7 @@ export default async function DashboardLayout({
 	const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
 
 	return (
-		<UserAuthenticationProvider profile="admin">
-
+		<UserAuthenticationProvider profile="user">
 			<div className="flex min-h-screen bg-muted/30">
 				<SidebarProvider
 					defaultOpen={defaultOpen}
@@ -25,10 +24,10 @@ export default async function DashboardLayout({
 						} as React.CSSProperties
 					}
 				>
-					<AppSidebar profileType="admin" variant="inset" />
+					<AppSidebar profileType="user" variant="inset" />
 
 					<SidebarInset>
-						<SiteHeader />
+						<SiteHeader sectionName="Área do usuário" />
 
 						<div className="flex flex-1 flex-col">
 							<div className="@container/main flex flex-1 flex-col gap-2">

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -12,11 +12,13 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use((config) => {
 	const adminToken = Cookies.get('admin-token');
-	const userToken = Cookies.get('admin-token');
+	const userToken = Cookies.get('user-token');
 
-	if (config.url?.includes('/private') && adminToken) {
+	console.log('aqui no interceptor', config.url, adminToken, userToken);
+
+	if ((config.url?.includes('/private') || config.url?.includes('/auth/admin')) && adminToken) {
 		config.headers.Authorization = `Bearer ${adminToken}`;
-	} else if (userToken) {
+	} else if (config.url?.includes('/auth/user') && userToken) {
 		config.headers.Authorization = `Bearer ${userToken}`;
 	}
 	return config;

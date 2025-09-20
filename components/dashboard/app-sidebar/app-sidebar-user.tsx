@@ -29,23 +29,30 @@ import {
 import { useRouter } from 'next/navigation';
 import { ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
+import { useUserAuthentication } from '@/contexts/user-authentication-context';
+import { useEffect } from 'react';
 
 type Props = {
-	user: {
-		initials: string
-		name: string
-		email: string
-		avatar: string
-	}
+	profile: 'admin' | 'user';
 }
 
-export function NavUser({ user }: Props) {
+export function NavUser({ profile }: Props) {
 	const { isMobile } = useSidebar();
 	const router = useRouter();
+	const { user, fetchUser } = useUserAuthentication();
+
+	const logoutPath = profile === 'admin' ? '/api/authentication/admin/logout' : '/api/authentication/user/logout';
+	const redirectPath = profile === 'admin' ? '/authentication/admin/login' : '/authentication/user/login';
+
+	useEffect(() => {
+		if (!user.email) {
+			fetchUser();
+		}
+	}, [user, fetchUser]);
 
 	async function handleLogout() {
-		await fetch('/api/authentication/admin/logout', { method: 'POST' });
-		router.push('/authentication/admin/login');
+		await fetch(logoutPath, { method: 'POST' });
+		router.push(redirectPath);
 	}
 
 	return (

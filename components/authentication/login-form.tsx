@@ -5,53 +5,86 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PasswordInput } from '@/components/ui/password';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Loader2Icon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
+const schema = z.object({
+	email: z.string().email('Email inválido'),
+	password: z.string().min(3, 'A senha deve ter pelo menos 6 caracteres'),
+});
+
+type FormData = z.infer<typeof schema>;
+type UserLoginFormProps = React.ComponentProps<'form'> & {
+	routeName: string
+	redirectTo: string
+	showRegister?: boolean
+	showForgot?: boolean
+};
+
+export function LoginForm({
+	className,
+	routeName,
+	redirectTo,
+	showRegister = true,
+	showForgot = true,
+	...props
+}: UserLoginFormProps) {
 	const router = useRouter();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<FormData>({
+		resolver: zodResolver(schema),
+		mode: 'onChange',
+	});
 
-	async function handleLogin(e: React.FormEvent) {
-		e.preventDefault();
+	useEffect(() => {
+		// reset({ email: 'user@email.com', password: 'senha' });
+	}, [reset]);
+
+	const onSubmit = async (data: FormData) => {
 		setLoading(true);
 
+		const { email, password } = data;
+
+		const payload = { email, password };
+
 		try {
-			const res = await fetch('/api/authentication/admin/login', {
+			await fetch(routeName, {
 				method: 'POST',
-				body: JSON.stringify({ email, password }),
+				body: JSON.stringify(payload),
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			if (res.ok) {
-				router.push('/dashboard');
-				toast.success('Login efetuado com sucesso!');
-			} else {
-				alert('Login inválido!');
-			}
+			router.push(redirectTo);
+			toast.success('Login efetuado com sucesso!');
 		} catch (error) {
 			console.error(error);
-			toast.error('Erro ao cadastrar usuário!');
+			toast.error('Credenciais inválidas!');
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<form
+			onSubmit={handleSubmit(onSubmit)}
 			autoComplete="off"
-			onSubmit={handleLogin}
 			className={cn('flex flex-col gap-6', className)}
 			{...props}
 		>
 			<div className="flex flex-col items-center gap-2 text-center">
-				<h1 className="text-2xl font-bold">Acesse sua conta</h1>
+				<h1 className="text-2xl font-bold">Bem vindo!</h1>
 				<p className="text-muted-foreground text-sm text-balance">
-					Entre com seu email para continuar
+					Entre com seu email e senha para continuar.
 				</p>
 			</div>
 			<div className="grid gap-6">
@@ -60,34 +93,30 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
 					<Input
 						id="email"
 						type="email"
-						placeholder="m@example.com"
-						required
-						value={email}
-						disabled={loading}
-						autoComplete="off"
-						onInput={(e) => setEmail(e.currentTarget.value)}
+						{...register('email')}
 					/>
+
+					{errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
 				</div>
 				<div className="grid gap-3">
 					<div className="flex items-center">
 						<Label htmlFor="password">Senha</Label>
-						<a
-							href="/authentication/forgot"
-							className="ml-auto text-sm underline-offset-4 hover:underline"
-						>
-							Esqueceu sua senha?
-						</a>
+						{showForgot && (
+							<a
+								href="/authentication/forgot"
+								className="ml-auto text-sm underline-offset-4 hover:underline"
+							>
+								Esqueceu sua senha?
+							</a>
+						)}
+
 					</div>
 					<PasswordInput
 						id="password"
 						type="password"
-						required
-						value={password}
-						disabled={loading}
-						placeholder="Digite sua senha"
-						autoComplete="off"
-						onInput={(e) => setPassword(e.currentTarget.value)}
+						{...register('password')}
 					/>
+					{errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
 				</div>
 				<Button
 					disabled={loading}
@@ -98,14 +127,16 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
 					{loading ? 'Entrando...' : 'Entrar'}
 				</Button>
 			</div>
-			<div className="text-center text-sm">
-				<p className="flex justify-center gap-2">
-					<span>Não tem uma conta?</span>
-					<a href="/authentication/register" className="underline underline-offset-4">
-						Registre-se
-					</a>
-				</p>
-			</div>
+			{showRegister && (
+				<div className="text-center text-sm">
+					<p className="flex justify-center gap-2">
+						<span>Não tem uma conta?</span>
+						<a href="/authentication/register" className="underline underline-offset-4">
+							Registre-se
+						</a>
+					</p>
+				</div>
+			)}
 		</form>
 	);
 }

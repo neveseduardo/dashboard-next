@@ -4,7 +4,7 @@ import {
 	IconSearch,
 	IconSettings,
 } from '@tabler/icons-react';
-import { ShieldUser, User } from 'lucide-react';
+import { Building, Calendar, ShieldUser, User } from 'lucide-react';
 
 export const sidebarLinks = {
 	user: {
@@ -13,6 +13,28 @@ export const sidebarLinks = {
 		email: 'admin@email.com',
 		avatar: 'https://github.com/shadcn.png',
 	},
+	navUser: [
+		{
+			title: 'Página Inicial',
+			url: '/usuario',
+			icon: IconDashboard,
+		},
+		{
+			title: 'Meus agendamentos',
+			url: '/usuario/agendamentos',
+			icon: Calendar,
+		},
+		{
+			title: 'Unidades próximas',
+			url: '/usuario/unidades',
+			icon: Building,
+		},
+		{
+			title: 'Exames disponíveis',
+			url: '/usuario/exames',
+			icon: IconSearch,
+		},
+	],
 	navMain: [
 		{
 			title: 'Dashboard',
